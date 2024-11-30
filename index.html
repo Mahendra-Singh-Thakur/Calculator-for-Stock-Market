@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Change Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Price Change Calculator</h1>
+    <form id="priceForm">
+        <label for="oldPrice">Old Price:</label>
+        <input type="number" id="oldPrice" placeholder="Enter old price" required><br><br>
+
+        <label for="newPrice">New Price:</label>
+        <input type="number" id="newPrice" placeholder="Enter new price" required><br><br>
+
+        <button type="button" id="calculateChange">Calculate Percentage Change</button><br><br>
+    </form>
+
+    <div id="output1"></div>
+
+    <form id="additionalForm" style="display: none;">
+        <h2>Additional Calculation</h2>
+        <label for="amount">Enter Amount:</label>
+        <input type="number" id="amount" placeholder="Enter amount" required><br><br>
+
+        <button type="button" id="applyChange">Apply Change</button>
+    </form>
+    <div id="output2"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
