@@ -1,116 +1,505 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Price Change, SIP, and SWP Calculator</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-    <!-- Dark Mode Toggle -->
-    <div class="theme-toggle">
-        <button id="themeToggle" class="theme-btn" title="Toggle Dark Mode">
-            <span class="theme-icon">🌙</span>
-        </button>
-    </div>
+    <meta name="description" content="Comprehensive Stock Market Calculator - SIP, SWP, CAGR, P/E Ratio, Risk Management, and more financial tools">
+    <meta name="keywords" content="stock market calculator, SIP calculator, investment calculator, CAGR, financial tools">
+    <meta name="author" content="Stock Market Calculator">
+    <meta name="theme-color" content="#1a1a2e">
     
-    <h1>Price Change, SIP, and SWP Calculator</h1>
-
-    <!-- Price Change Calculator -->
-    <div id="priceChange">
-        <h2>Price Change Calculator</h2>
-        <form id="priceForm">
-            <label for="oldPrice">Old Price:</label>
-            <input type="number" id="oldPrice" placeholder="Enter old price" required><br><br>
-
-            <label for="newPrice">New Price:</label>
-            <input type="number" id="newPrice" placeholder="Enter new price" required><br><br>
-
-            <button type="button" id="calculateChange">Calculate Percentage Change</button><br><br>
-        </form>
-
-        <div id="output1"></div>
-
-        <form id="additionalForm" style="display: none;">
-            <h3>Additional Calculation</h3>
-            <label for="amount">Enter Amount:</label>
-            <input type="number" id="amount" placeholder="Enter amount" required><br><br>
-
-            <button type="button" id="applyChange">Apply Change</button>
-        </form>
-        <div id="output2"></div>
-    </div>
-
-    <!-- SIP Calculator -->
-    <div id="sipCalculator">
-        <h2>SIP Calculator</h2>
-        <form id="sipForm">
-            <label for="sipAmount">Monthly SIP Amount:</label>
-            <input type="number" id="sipAmount" placeholder="Enter SIP amount" required><br><br>
-
-            <label for="sipRate">Expected Annual Return (%) :</label>
-            <input type="number" id="sipRate" placeholder="Enter return rate" required><br><br>
-
-            <label for="sipDuration">Investment Duration (years):</label>
-            <input type="number" id="sipDuration" placeholder="Enter duration in years" required><br><br>
-
-            <button type="button" id="calculateSIP">Calculate SIP Value</button>
-        </form>
-
-        <div id="sipOutput"></div>
-    </div>
-
-    <!-- SWP Calculator -->
-    <div id="swpCalculator">
-        <h2>SWP Calculator</h2>
-        <form id="swpForm">
-            <label for="swpAmount">Total Investment Amount:</label>
-            <input type="number" id="swpAmount" placeholder="Enter total amount" required><br><br>
-
-            <label for="swpRate">Expected Annual Return (%) :</label>
-            <input type="number" id="swpRate" placeholder="Enter return rate" required><br><br>
-
-            <label for="swpDuration">Withdrawal Duration (years):</label>
-            <input type="number" id="swpDuration" placeholder="Enter withdrawal duration" required><br><br>
-
-            <button type="button" id="calculateSWP">Calculate SWP Value</button>
-        </form>
-
-        <div id="swpOutput"></div>
-    </div>
-
-    <!-- CAGR Calculator -->
-    <div id="cagrCalculator">
-        <h2>CAGR Calculator</h2>
-        <form id="cagrForm">
-            <label for="initialValue">Initial Investment Value:</label>
-            <input type="number" id="initialValue" placeholder="Enter initial value" required><br><br>
-
-            <label for="finalValue">Final Investment Value:</label>
-            <input type="number" id="finalValue" placeholder="Enter final value" required><br><br>
-
-            <label for="cagrYears">Number of Years:</label>
-            <input type="number" id="cagrYears" placeholder="Enter number of years" step="0.1" required><br><br>
-
-            <button type="button" id="calculateCAGR">Calculate CAGR</button>
-        </form>
-
-        <div id="cagrOutput"></div>
-    </div>
-
-    <!-- Calculation History -->
-    <div id="historySection" style="margin-top: 40px;">
-        <h2>Calculation History</h2>
-        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-            <button type="button" id="viewHistory" class="history-btn">View History</button>
-            <button type="button" id="clearHistory" class="history-btn" style="background-color: #dc3545;">Clear History</button>
+    <title>Professional Stock Market Calculator Suite</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader">
+            <div class="loader-inner"></div>
         </div>
-        <div id="historyOutput"></div>
+        <p>Loading Financial Tools...</p>
     </div>
 
-    <script src="script.js"></script>
-</body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <h1>Stock Market Calculator Suite</h1>
+                </div>
+                <nav class="nav-menu">
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    <div class="language-selector">
+                        <select id="languageSelect" aria-label="Select language">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                    <button id="menuToggle" class="menu-toggle" aria-label="Toggle menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
 
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Tab Navigation -->
+            <div class="tab-container">
+                <div class="tab-nav">
+                    <button class="tab-btn active" data-tab="basic">
+                        <i class="fas fa-calculator"></i>
+                        <span>Basic</span>
+                    </button>
+                    <button class="tab-btn" data-tab="investment">
+                        <i class="fas fa-piggy-bank"></i>
+                        <span>Investment</span>
+                    </button>
+                    <button class="tab-btn" data-tab="analysis">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Analysis</span>
+                    </button>
+                    <button class="tab-btn" data-tab="risk">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Risk Management</span>
+                    </button>
+                    <button class="tab-btn" data-tab="portfolio">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Portfolio</span>
+                    </button>
+                    <button class="tab-btn" data-tab="charts">
+                        <i class="fas fa-chart-area"></i>
+                        <span>Charts</span>
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Basic Calculators Tab -->
+                    <div id="basic" class="tab-pane active">
+                        <div class="calculator-grid">
+                            <!-- Price Change Calculator -->
+                            <div class="calculator-card" data-calculator="priceChange">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-percentage"></i> Price Change Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="oldPrice">Old Price</label>
+                                        <input type="number" id="oldPrice" placeholder="Enter old price" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="newPrice">New Price</label>
+                                        <input type="number" id="newPrice" placeholder="Enter new price" step="0.01">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculatePriceChange()">
+                                        <i class="fas fa-calculator"></i> Calculate
+                                    </button>
+                                    <div id="priceChangeResult" class="result-container"></div>
+                                </div>
+                            </div>
+
+                            <!-- Profit/Loss Calculator -->
+                            <div class="calculator-card" data-calculator="profitLoss">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-coins"></i> Profit/Loss Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="buyPrice">Buy Price</label>
+                                        <input type="number" id="buyPrice" placeholder="Enter buy price" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="sellPrice">Sell Price</label>
+                                        <input type="number" id="sellPrice" placeholder="Enter sell price" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="quantity">Quantity</label>
+                                        <input type="number" id="quantity" placeholder="Enter quantity">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="brokerage">Brokerage (%)</label>
+                                        <input type="number" id="brokerage" placeholder="Enter brokerage %" step="0.01" value="0.03">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculateProfitLoss()">
+                                        <i class="fas fa-calculator"></i> Calculate P/L
+                                    </button>
+                                    <div id="profitLossResult" class="result-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Investment Calculators Tab -->
+                    <div id="investment" class="tab-pane">
+                        <div class="calculator-grid">
+                            <!-- SIP Calculator -->
+                            <div class="calculator-card" data-calculator="sip">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-chart-line"></i> SIP Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="sipAmount">Monthly Investment</label>
+                                        <input type="number" id="sipAmount" placeholder="Enter monthly amount" step="100">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="sipRate">Expected Return (%)</label>
+                                        <input type="number" id="sipRate" placeholder="Annual return %" step="0.1">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="sipYears">Investment Period (Years)</label>
+                                        <input type="number" id="sipYears" placeholder="Years" step="1">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculateSIP()">
+                                        <i class="fas fa-calculator"></i> Calculate SIP
+                                    </button>
+                                    <div id="sipResult" class="result-container"></div>
+                                    <canvas id="sipChart" style="display:none; margin-top: 20px;"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- SWP Calculator -->
+                            <div class="calculator-card" data-calculator="swp">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-hand-holding-usd"></i> SWP Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="swpAmount">Total Investment</label>
+                                        <input type="number" id="swpAmount" placeholder="Enter total amount" step="1000">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="swpRate">Expected Return (%)</label>
+                                        <input type="number" id="swpRate" placeholder="Annual return %" step="0.1">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="swpYears">Withdrawal Period (Years)</label>
+                                        <input type="number" id="swpYears" placeholder="Years" step="1">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculateSWP()">
+                                        <i class="fas fa-calculator"></i> Calculate SWP
+                                    </button>
+                                    <div id="swpResult" class="result-container"></div>
+                                    <canvas id="swpChart" style="display:none; margin-top: 20px;"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- CAGR Calculator -->
+                            <div class="calculator-card" data-calculator="cagr">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-chart-bar"></i> CAGR Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="initialValue">Initial Value</label>
+                                        <input type="number" id="initialValue" placeholder="Initial investment" step="100">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="finalValue">Final Value</label>
+                                        <input type="number" id="finalValue" placeholder="Final value" step="100">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="cagrYears">Period (Years)</label>
+                                        <input type="number" id="cagrYears" placeholder="Number of years" step="0.1">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculateCAGR()">
+                                        <i class="fas fa-calculator"></i> Calculate CAGR
+                                    </button>
+                                    <div id="cagrResult" class="result-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Tab -->
+                    <div id="analysis" class="tab-pane">
+                        <div class="calculator-grid">
+                            <!-- P/E Ratio Calculator -->
+                            <div class="calculator-card" data-calculator="peRatio">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-balance-scale"></i> P/E Ratio Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="stockPrice">Stock Price</label>
+                                        <input type="number" id="stockPrice" placeholder="Current stock price" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="eps">Earnings Per Share (EPS)</label>
+                                        <input type="number" id="eps" placeholder="EPS" step="0.01">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculatePERatio()">
+                                        <i class="fas fa-calculator"></i> Calculate P/E
+                                    </button>
+                                    <div id="peRatioResult" class="result-container"></div>
+                                </div>
+                            </div>
+
+                            <!-- Dividend Yield Calculator -->
+                            <div class="calculator-card" data-calculator="dividendYield">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-percentage"></i> Dividend Yield Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="annualDividend">Annual Dividend</label>
+                                        <input type="number" id="annualDividend" placeholder="Annual dividend per share" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="currentPrice">Current Stock Price</label>
+                                        <input type="number" id="currentPrice" placeholder="Current price" step="0.01">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculateDividendYield()">
+                                        <i class="fas fa-calculator"></i> Calculate Yield
+                                    </button>
+                                    <div id="dividendYieldResult" class="result-container"></div>
+                                </div>
+                            </div>
+
+                            <!-- Stock Average Calculator -->
+                            <div class="calculator-card" data-calculator="stockAverage">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-layer-group"></i> Stock Average Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div id="stockEntries">
+                                        <div class="stock-entry">
+                                            <div class="input-group">
+                                                <label>Buy Price</label>
+                                                <input type="number" class="avg-price" placeholder="Price" step="0.01">
+                                            </div>
+                                            <div class="input-group">
+                                                <label>Quantity</label>
+                                                <input type="number" class="avg-quantity" placeholder="Quantity">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="calc-btn secondary" onclick="addStockEntry()">
+                                        <i class="fas fa-plus"></i> Add Entry
+                                    </button>
+                                    <button class="calc-btn primary" onclick="calculateAverage()">
+                                        <i class="fas fa-calculator"></i> Calculate Average
+                                    </button>
+                                    <div id="stockAverageResult" class="result-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Management Tab -->
+                    <div id="risk" class="tab-pane">
+                        <div class="calculator-grid">
+                            <!-- Risk-Reward Calculator -->
+                            <div class="calculator-card" data-calculator="riskReward">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-balance-scale-right"></i> Risk-Reward Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="entryPrice">Entry Price</label>
+                                        <input type="number" id="entryPrice" placeholder="Entry price" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="stopLoss">Stop Loss</label>
+                                        <input type="number" id="stopLoss" placeholder="Stop loss price" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="target">Target Price</label>
+                                        <input type="number" id="target" placeholder="Target price" step="0.01">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculateRiskReward()">
+                                        <i class="fas fa-calculator"></i> Calculate R:R
+                                    </button>
+                                    <div id="riskRewardResult" class="result-container"></div>
+                                </div>
+                            </div>
+
+                            <!-- Position Size Calculator -->
+                            <div class="calculator-card" data-calculator="positionSize">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-coins"></i> Position Size Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="accountSize">Account Size</label>
+                                        <input type="number" id="accountSize" placeholder="Total capital" step="100">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="riskPercent">Risk Per Trade (%)</label>
+                                        <input type="number" id="riskPercent" placeholder="Risk %" step="0.1" value="2">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="entryPricePos">Entry Price</label>
+                                        <input type="number" id="entryPricePos" placeholder="Entry price" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="stopLossPos">Stop Loss Price</label>
+                                        <input type="number" id="stopLossPos" placeholder="Stop loss" step="0.01">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculatePositionSize()">
+                                        <i class="fas fa-calculator"></i> Calculate Size
+                                    </button>
+                                    <div id="positionSizeResult" class="result-container"></div>
+                                </div>
+                            </div>
+
+                            <!-- Margin Calculator -->
+                            <div class="calculator-card" data-calculator="margin">
+                                <div class="card-header">
+                                    <h3><i class="fas fa-percentage"></i> Margin Calculator</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <label for="marginStockPrice">Stock Price</label>
+                                        <input type="number" id="marginStockPrice" placeholder="Stock price" step="0.01">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="marginQuantity">Quantity</label>
+                                        <input type="number" id="marginQuantity" placeholder="Number of shares">
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="marginPercent">Margin Required (%)</label>
+                                        <input type="number" id="marginPercent" placeholder="Margin %" step="0.1" value="20">
+                                    </div>
+                                    <button class="calc-btn primary" onclick="calculateMargin()">
+                                        <i class="fas fa-calculator"></i> Calculate Margin
+                                    </button>
+                                    <div id="marginResult" class="result-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Portfolio Tab -->
+                    <div id="portfolio" class="tab-pane">
+                        <div class="portfolio-container">
+                            <div class="portfolio-header">
+                                <h2><i class="fas fa-briefcase"></i> Portfolio Tracker</h2>
+                                <button class="calc-btn primary" onclick="addPortfolioItem()">
+                                    <i class="fas fa-plus"></i> Add Stock
+                                </button>
+                            </div>
+                            <div id="portfolioList" class="portfolio-list"></div>
+                            <div id="portfolioSummary" class="portfolio-summary"></div>
+                            <canvas id="portfolioChart" style="display:none; margin-top: 20px;"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Charts Tab -->
+                    <div id="charts" class="tab-pane">
+                        <div class="charts-container">
+                            <h2><i class="fas fa-chart-area"></i> Visual Analytics</h2>
+                            <div class="chart-grid">
+                                <div class="chart-card">
+                                    <h3>Comparison Chart</h3>
+                                    <canvas id="comparisonChart"></canvas>
+                                </div>
+                                <div class="chart-card">
+                                    <h3>Growth Projection</h3>
+                                    <canvas id="growthChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <section class="history-section">
+                <div class="history-header">
+                    <h2><i class="fas fa-history"></i> Calculation History</h2>
+                    <div class="history-controls">
+                        <button class="calc-btn secondary" onclick="exportHistory()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="calc-btn danger" onclick="clearHistory()">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                    </div>
+                </div>
+                <div id="historyList" class="history-list"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p>Professional Stock Market Calculator Suite - Your complete financial calculation toolkit.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li>15+ Financial Calculators</li>
+                        <li>Real-time Charts</li>
+                        <li>Portfolio Management</li>
+                        <li>Export Capabilities</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Stock Market Calculator Suite. All rights reserved. | Version 2.0</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <button class="fab" id="fabMain">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="fab-menu">
+            <button class="fab-item" onclick="printResults()" title="Print">
+                <i class="fas fa-print"></i>
+            </button>
+            <button class="fab-item" onclick="shareResults()" title="Share">
+                <i class="fas fa-share"></i>
+            </button>
+            <button class="fab-item" onclick="showKeyboardShortcuts()" title="Shortcuts">
+                <i class="fas fa-keyboard"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/all-calculators.js"></script>
+    <script src="js/calculators/basic.js"></script>
+</body>
 </html>

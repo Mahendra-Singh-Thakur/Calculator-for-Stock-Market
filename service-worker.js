@@ -2,7 +2,7 @@
 const CACHE_NAME = 'stock-calc-v2.0';
 const urlsToCache = [
   '/',
-  '/index_new.html',
+  '/index.html',
   '/css/style.css',
   '/js/app.js',
   '/js/all-calculators.js',

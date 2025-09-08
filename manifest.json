@@ -2,7 +2,7 @@
   "name": "Stock Market Calculator Suite",
   "short_name": "StockCalc",
   "description": "Comprehensive financial calculator suite for stock market investors",
-  "start_url": "/index_new.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#1a1a2e",
   "theme_color": "#4F46E5",
@@ -75,14 +75,14 @@
       "name": "SIP Calculator",
       "short_name": "SIP",
       "description": "Calculate SIP returns",
-      "url": "/index_new.html#investment",
+      "url": "/index.html#investment",
       "icons": [{ "src": "/assets/icons/sip.png", "sizes": "96x96" }]
     },
     {
       "name": "Portfolio",
       "short_name": "Portfolio",
       "description": "View portfolio",
-      "url": "/index_new.html#portfolio",
+      "url": "/index.html#portfolio",
       "icons": [{ "src": "/assets/icons/portfolio.png", "sizes": "96x96" }]
     }
   ]
