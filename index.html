@@ -9,6 +9,13 @@
 </head>
 
 <body>
+    <!-- Dark Mode Toggle -->
+    <div class="theme-toggle">
+        <button id="themeToggle" class="theme-btn" title="Toggle Dark Mode">
+            <span class="theme-icon">🌙</span>
+        </button>
+    </div>
+    
     <h1>Price Change, SIP, and SWP Calculator</h1>
 
     <!-- Price Change Calculator -->
@@ -72,6 +79,35 @@
         </form>
 
         <div id="swpOutput"></div>
+    </div>
+
+    <!-- CAGR Calculator -->
+    <div id="cagrCalculator">
+        <h2>CAGR Calculator</h2>
+        <form id="cagrForm">
+            <label for="initialValue">Initial Investment Value:</label>
+            <input type="number" id="initialValue" placeholder="Enter initial value" required><br><br>
+
+            <label for="finalValue">Final Investment Value:</label>
+            <input type="number" id="finalValue" placeholder="Enter final value" required><br><br>
+
+            <label for="cagrYears">Number of Years:</label>
+            <input type="number" id="cagrYears" placeholder="Enter number of years" step="0.1" required><br><br>
+
+            <button type="button" id="calculateCAGR">Calculate CAGR</button>
+        </form>
+
+        <div id="cagrOutput"></div>
+    </div>
+
+    <!-- Calculation History -->
+    <div id="historySection" style="margin-top: 40px;">
+        <h2>Calculation History</h2>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+            <button type="button" id="viewHistory" class="history-btn">View History</button>
+            <button type="button" id="clearHistory" class="history-btn" style="background-color: #dc3545;">Clear History</button>
+        </div>
+        <div id="historyOutput"></div>
     </div>
 
     <script src="script.js"></script>
